@@ -113,4 +113,4 @@ def train_model(data_path, prev_epoch,batch_size, learning_rate, epoch_nums, wei
     print("Loss curves saved.")
 
 if __name__ == "__main__":
-    train_model(data_path="./mentee.xlsx", prev_epoch=0, batch_size=16, learning_rate=1e-4, epoch_nums=50, weights_path="./weights")
+    train_model(data_path="./mentee.xlsx", prev_epoch=0, batch_size=16, learning_rate=1e-4, epoch_nums=30, weights_path="./weights")

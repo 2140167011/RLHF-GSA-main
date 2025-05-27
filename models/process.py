@@ -19,18 +19,13 @@ def nopeak_mask(size):
     np_mask = Variable(torch.from_numpy(np_mask==0))
     return np_mask
 
-GENDER_LIST  = ['男 Male', '女 Female']
-GENDER_INDEX = {gender: idx for idx, gender in enumerate(GENDER_LIST)}
+
 GENDER_MATRIX = torch.tensor([
     [0.3, 1.0],
     [1.0, 0.6]
 ], dtype=torch.float)
 
 
-SCHOOL_LIST = ["理工学院 SSE", "数据科学学院 SDS", "经管学院 SME", 
-                "人文社科学院 SHSS", "金融工程 FE", "音乐学院 MUS", 
-                "医学院非临床 MED(nonclinical)", "医学院临床 CMED"]
-SCHOOL_INDEX = {school: idx for idx, school in enumerate(SCHOOL_LIST)}
 SCHOOL_MATRIX = torch.tensor([
     [1.0, 0.8, 0.5, 0.2, 0.7, 0.1, 0.6, 0.3],
     [0.8, 1.0, 0.5, 0.2, 0.7, 0.1, 0.6, 0.3],
@@ -43,9 +38,6 @@ SCHOOL_MATRIX = torch.tensor([
 ], dtype=torch.float)
 
 
-COLLEGE_LIST = ['逸夫书院 Shaw', '祥波书院 Harmonia', '学勤书院 Diligentia',
-                '厚含书院 Minerva', '思廷书院 Muse', '道扬书院 Ling', '第七书院 The Seventh']
-COLLEGE_INDEX = {college: idx for idx, college in enumerate(COLLEGE_LIST)}
 COLLEGE_MATRIX = torch.tensor([
     [1.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], 
     [0.1, 1.0, 0.4, 0.3, 0.5, 0.6, 0.1],
@@ -124,13 +116,13 @@ class MatchingDataset(Dataset):
         self.pairs = []
         for userA, userB in combinations(self.users, 2):
             g1, g2 = userA['gender'], userB['gender']
-            gender_score = GENDER_MATRIX[GENDER_MATRIX[g1], GENDER_MATRIX[g2]]
+            gender_score = GENDER_MATRIX[g1, g2]
             
             s1, s2 = userA['school'], userB['school']
-            school_score = SCHOOL_MATRIX[SCHOOL_MATRIX[s1], SCHOOL_MATRIX[s2]] 
+            school_score = SCHOOL_MATRIX[s1, s2] 
 
             c1, c2 = userA['college'], userB['college']
-            college_score = COLLEGE_MATRIX[COLLEGE_MATRIX[c1], COLLEGE_MATRIX[c2]]
+            college_score = COLLEGE_MATRIX[c1, c2]
 
             m1, m2 = userA['mbti_str'], userB['mbti_str']
             mbti_score = MBTI_MATRIX[MBTI_INDEX[m1], MBTI_INDEX[m2]] if m1 in MBTI_INDEX and m2 in MBTI_INDEX else 0.0
